@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TEA Portal</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap');
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Orbitron',sans-serif;
+}
+
+body{
+background: radial-gradient(circle at center,#0f0f2e,#050510 70%);
+color:white;
+overflow:hidden;
+}
+
+/* ===== GERBANG ===== */
+#gate{
+position:fixed;
+width:100%;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+background:linear-gradient(135deg,#0a0a25,#120022);
+z-index:10;
+}
+
+.gate-box{
+padding:40px;
+border:2px solid #ff00ff;
+border-radius:20px;
+box-shadow:0 0 40px #ff00ff55;
+text-align:center;
+animation: glow 2s infinite alternate;
+}
+
+.gate-box h1{
+font-size:28px;
+margin-bottom:20px;
+color:#ff00ff;
+}
+
+.gate-box button{
+padding:12px 30px;
+border:none;
+border-radius:10px;
+background:linear-gradient(90deg,#00ffff,#ff00ff);
+color:black;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
+}
+
+.gate-box button:hover{
+transform:scale(1.1);
+}
+
+@keyframes glow{
+from{box-shadow:0 0 20px #ff00ff55;}
+to{box-shadow:0 0 60px #ff00ff;}
+}
+
+/* ===== LOADING PULSAR ===== */
+#loading{
+position:fixed;
+width:100%;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+background:black;
+z-index:9;
+display:none;
+}
+
+.pulsar{
+position:relative;
+width:200px;
+height:200px;
+border-radius:50%;
+background:radial-gradient(circle,#ff00ff,#000);
+box-shadow:0 0 50px #ff00ff,0 0 100px #00ffff;
+animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+0%{transform:scale(0.9);}
+50%{transform:scale(1.1);}
+100%{transform:scale(0.9);}
+}
+
+.ray{
+position:absolute;
+width:400px;
+height:4px;
+background:linear-gradient(90deg,transparent,#00ffff,transparent);
+top:50%;
+left:-100px;
+transform-origin:center;
+animation:spin 2s linear infinite;
+}
+
+@keyframes spin{
+from{transform:rotate(0deg);}
+to{transform:rotate(360deg);}
+}
+
+.loading-text{
+margin-top:40px;
+color:#00ffff;
+letter-spacing:3px;
+animation: blink 1s infinite alternate;
+}
+
+@keyframes blink{
+from{opacity:0.5;}
+to{opacity:1;}
+}
+
+/* ===== PORTAL ===== */
+#portal{
+display:none;
+height:100vh;
+overflow:auto;
+padding:30px;
+background:radial-gradient(circle at top,#14002b,#050510 70%);
+}
+
+.header{
+text-align:center;
+margin-bottom:30px;
+}
+
+.header h1{
+font-size:40px;
+background:linear-gradient(90deg,#00ffff,#ff00ff);
+-webkit-background-clip:text;
+color:transparent;
+}
+
+.card{
+background:#111122;
+padding:20px;
+border-radius:15px;
+margin-bottom:20px;
+box-shadow:0 0 20px #00ffff33;
+}
+
+.card h2{
+margin-bottom:10px;
+color:#ff00ff;
+}
+
+.card a{
+display:inline-block;
+margin-top:10px;
+padding:10px 20px;
+background:linear-gradient(90deg,#ff00ff,#00ffff);
+color:black;
+border-radius:8px;
+text-decoration:none;
+font-weight:bold;
+transition:0.3s;
+}
+
+.card a:hover{
+transform:scale(1.05);
+}
+
+.footer{
+text-align:center;
+margin-top:30px;
+font-size:12px;
+opacity:0.6;
+}
+</style>
+</head>
+
+<body>
+
+<!-- GERBANG -->
+<div id="gate">
+<div class="gate-box">
+<h1>GERBANG TEA</h1>
+<button onclick="startPortal()">MASUK SISTEM</button>
+</div>
+</div>
+
+<!-- LOADING -->
+<div id="loading">
+<div class="pulsar"></div>
+<div class="ray"></div>
+<h1 style="position:absolute;color:white;">TEA</h1>
+<div class="loading-text">MENGAKTIFKAN PULSAR...</div>
+</div>
+
+<!-- PORTAL -->
+<div id="portal">
+<div class="header">
+<h1>PORTAL TEA</h1>
+<p>Cyberpunk Research System</p>
+</div>
+
+<div class="card">
+<h2>Saluran WhatsApp</h2>
+<p>Gabung ke channel resmi untuk info terbaru.</p>
+<a href="https://whatsapp.com/channel/0029Vb7iOwe8F2pCMsNSZx2c" target="_blank">Masuk Channel</a>
+</div>
+
+<div class="card">
+<h2>Pendaftaran Anggota</h2>
+<p>Isi formulir resmi untuk bergabung.</p>
+<a href="https://tea-formulir.vercel.app/" target="_blank">Daftar Sekarang</a>
+</div>
+
+<div class="card">
+<h2>Grup Diskusi</h2>
+<p>Gabung grup komunitas TEA.</p>
+<a href="https://chat.whatsapp.com/DHndTt4hJqp202DaJmVyiv?mode=gi_t" target="_blank">Masuk Grup</a>
+</div>
+
+<div class="footer">
+© 2026 TEA Cyberpunk System
+</div>
+</div>
+
+<script>
+function startPortal(){
+document.getElementById("gate").style.display="none";
+document.getElementById("loading").style.display="flex";
+
+setTimeout(()=>{
+document.getElementById("loading").style.display="none";
+document.getElementById("portal").style.display="block";
+document.body.style.overflow="auto";
+},3000);
+}
+</script>
+
+</body>
+  </html>
