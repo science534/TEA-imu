@@ -1,264 +1,180 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TEA Cyber Portal</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tea Registrasi - The Editor of Astronomy</title>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database-compat.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;700&display=swap');
 
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+        body {
+            margin: 0; padding: 0;
+            background-color: #020205; /* Hitam Galaxy */
+            font-family: 'Roboto', sans-serif;
+            color: #fff;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; overflow-x: hidden;
+        }
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Orbitron',sans-serif;}
-body{
-background:radial-gradient(circle at top,#14002b,#050510 70%);
-color:white;
-overflow:hidden;
-}
+        /* TORNADO KECIL DI ATAS */
+        #tornado-container {
+            width: 120px; height: 120px;
+            margin-top: 20px; display: flex; justify-content: center;
+        }
+        canvas#tornado { width: 100%; height: 100%; }
 
-/* ================= GERBANG ================= */
-#gate{
-position:fixed;
-width:100%;
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-background:#060012;
-z-index:10;
-}
+        .main-content { width: 92%; max-width: 400px; z-index: 10; padding-bottom: 50px; }
 
-.gate-box{
-width:90%;
-max-width:420px;
-background:#0f0f25;
-padding:25px;
-border-radius:18px;
-border:1px solid #ff00ff;
-box-shadow:0 0 40px #ff00ff55;
-}
+        .header { text-align: center; margin-bottom: 25px; }
+        .logo-text { font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: bold; }
+        .tea { color: #fff; }
+        .reg { color: #b533ff; text-shadow: 0 0 15px #b533ff; }
+        .sub-logo {
+            color: #ffd700; font-size: 11px; margin-top: 5px;
+            letter-spacing: 1.5px; font-weight: bold;
+        }
 
-.gate-box h1{
-color:#ff00ff;
-margin-bottom:10px;
-}
+        /* FORM CARD */
+        .card {
+            background: rgba(15, 5, 25, 0.75);
+            backdrop-filter: blur(10px);
+            padding: 25px; border-radius: 20px;
+            border: 1px solid rgba(181, 51, 255, 0.3);
+            box-shadow: 0 0 20px rgba(181, 51, 255, 0.1);
+        }
 
-.gate-box p{
-font-size:13px;
-opacity:0.8;
-margin-bottom:15px;
-}
+        .label { color: #ff4444; font-size: 11px; font-weight: bold; margin-bottom: 8px; display: block; }
+        .input {
+            width: 100%; background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #333; border-radius: 8px;
+            padding: 12px; color: #fff; margin-bottom: 18px;
+            box-sizing: border-box; font-size: 14px;
+        }
 
-.checkbox{
-display:flex;
-align-items:center;
-margin-bottom:15px;
-}
+        /* BUTTON GALAXY */
+        .btn {
+            width: 100%; padding: 16px; border-radius: 50px; border: none;
+            background: linear-gradient(90deg, #4b0082, #b533ff);
+            color: white; font-weight: bold; cursor: pointer;
+            box-shadow: 0 5px 15px rgba(181, 51, 255, 0.4);
+            text-transform: uppercase;
+        }
 
-.checkbox input{
-margin-right:8px;
-}
-
-button{
-width:100%;
-padding:12px;
-border:none;
-border-radius:8px;
-background:linear-gradient(90deg,#00ffff,#ff00ff);
-color:black;
-font-weight:bold;
-cursor:pointer;
-opacity:0.4;
-transition:0.3s;
-}
-
-button.active{
-opacity:1;
-}
-
-/* ================= PULSAR LOADING ================= */
-#loading{
-position:fixed;
-width:100%;
-height:100vh;
-display:none;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-background:black;
-z-index:9;
-}
-
-.pulsar{
-position:relative;
-width:180px;
-height:180px;
-border-radius:50%;
-background:radial-gradient(circle,#ff00ff,#2b0030);
-box-shadow:0 0 60px #ff00ff,0 0 120px #00ffff;
-animation:pulse 1.2s infinite ease-in-out;
-}
-
-.pulsar::after{
-content:"";
-position:absolute;
-width:400px;
-height:4px;
-background:linear-gradient(90deg,transparent,#00ffff,transparent);
-top:50%;
-left:-110px;
-transform-origin:center;
-animation:beam 1.5s linear infinite;
-}
-
-@keyframes pulse{
-0%{transform:scale(0.95);}
-50%{transform:scale(1.1);}
-100%{transform:scale(0.95);}
-}
-
-@keyframes beam{
-from{transform:rotate(0deg);}
-to{transform:rotate(360deg);}
-}
-
-.loading-text{
-margin-top:40px;
-color:#00ffff;
-letter-spacing:3px;
-}
-
-/* ================= PORTAL ================= */
-#portal{
-display:none;
-padding:20px;
-height:100vh;
-overflow:auto;
-}
-
-.card{
-background:#111122;
-padding:20px;
-border-radius:15px;
-margin-bottom:20px;
-box-shadow:0 0 20px #00ffff33;
-}
-
-.card h2{
-color:#ff00ff;
-margin-bottom:10px;
-}
-
-.card a{
-display:block;
-margin-top:10px;
-padding:10px;
-text-align:center;
-border-radius:8px;
-background:linear-gradient(90deg,#ff00ff,#00ffff);
-color:black;
-text-decoration:none;
-font-weight:bold;
-}
-
-.footer{
-text-align:center;
-opacity:0.5;
-font-size:12px;
-margin-top:20px;
-}
-</style>
+        /* DATABASE AKTIVITAS */
+        .db-section {
+            margin-top: 30px; background: rgba(10, 10, 20, 0.9);
+            padding: 15px; border-radius: 15px;
+            border: 1px solid rgba(181, 51, 255, 0.2);
+        }
+        .db-title { color: #b533ff; font-family: 'Orbitron', sans-serif; font-size: 14px; margin-bottom: 15px; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th { text-align: left; color: #555; padding-bottom: 8px; }
+        td { padding: 8px 0; border-bottom: 1px solid #1a1a1a; }
+        .status { color: #00ff88; font-weight: bold; text-align: right; }
+    </style>
 </head>
-
 <body>
 
-<!-- GERBANG DENGAN PERATURAN -->
-<div id="gate">
-<div class="gate-box">
-<h1>GERBANG MASUK TEA</h1>
-<p>Sistem Cyber Research TEA v1.0</p>
-<p>Harap baca aturan singkat sebelum masuk:</p>
-<p>• Gunakan portal dengan bijak<br>
-• Hormati anggota lain<br>
-• Ikuti prosedur sistem</p>
+<div id="tornado-container"><canvas id="tornado"></canvas></div>
 
-<div class="checkbox">
-<input type="checkbox" id="agree" onchange="toggleButton()">
-<label for="agree">Saya paham & siap masuk</label>
-</div>
+<div class="main-content">
+    <div class="header">
+        <div class="logo-text"><span class="tea">TEA</span> <span class="reg">REGISTRASI</span></div>
+        <div class="sub-logo">THE EDITOR OF ASTRONOMY</div>
+    </div>
 
-<button id="enterBtn" onclick="enterPortal()">Tunggu Persetujuan</button>
-</div>
-</div>
+    <div class="card">
+        <label class="label">NAMA LENGKAP</label>
+        <input type="text" id="nama" class="input" placeholder="Nama asli...">
+        <label class="label">UMUR</label>
+        <input type="number" id="umur" class="input" placeholder="minimal 12">
+        <label class="label">NAMA AKUN TIKTOK</label>
+        <input type="text" id="tiktok" class="input" placeholder="@username">
+        <label class="label">ALASAN BERGABUNG</label>
+        <textarea id="alasan" class="input" style="height: 60px; resize: none;" placeholder="Tulis alasan..."></textarea>
+        <button class="btn" onclick="prosesRegistrasi()">KIRIM & GABUNG GRUP WA</button>
+    </div>
 
-<!-- LOADING PULSAR -->
-<div id="loading">
-<div class="pulsar"></div>
-<h1 style="position:absolute;">TEA</h1>
-<div class="loading-text">MENGAKTIFKAN PULSAR...</div>
-</div>
-
-<!-- PORTAL UTAMA -->
-<div id="portal">
-<h1 style="text-align:center;margin-bottom:20px;">PORTAL TEA</h1>
-
-<div class="card">
-<h2>Saluran WhatsApp</h2>
-<a href="#" onclick="goLink('https://whatsapp.com/channel/0029Vb7iOwe8F2pCMsNSZx2c')">Masuk Channel</a>
-</div>
-
-<div class="card">
-<h2>Pendaftaran Anggota</h2>
-<a href="#" onclick="goLink('https://tea-formulir.vercel.app/')">Daftar Sekarang</a>
-</div>
-
-<div class="card">
-<h2>Grup Diskusi</h2>
-<a href="#" onclick="goLink('https://chat.whatsapp.com/DHndTt4hJqp202DaJmVyiv?mode=gi_t')">Masuk Grup</a>
-</div>
-
-<div class="footer">© 2026 TEA Cyber System</div>
+    <div class="db-section">
+        <div class="db-title">DATABASE AKTIVITAS</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ANGGOTA</th>
+                    <th>USIA</th>
+                    <th style="text-align: right;">STATUS</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                <tr><td colspan="3" style="color:#444; text-align:center;">Menunggu pendaftar...</td></tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <script>
-function toggleButton(){
-const check = document.getElementById("agree");
-const btn = document.getElementById("enterBtn");
-if(check.checked){
-btn.classList.add("active");
-btn.innerText="MASUK SISTEM";
-btn.style.opacity="1";
-}else{
-btn.classList.remove("active");
-btn.innerText="Tunggu Persetujuan";
-btn.style.opacity="0.4";
-}
-}
+    // --- FIREBASE SETUP ---
+    const firebaseConfig = { databaseURL: "https://pendaftaran-75335-default-rtdb.asia-southeast1.firebasedatabase.app/" };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-function enterPortal(){
-if(!document.getElementById("agree").checked) return;
+    function prosesRegistrasi() {
+        const nama = document.getElementById('nama').value;
+        const umur = document.getElementById('umur').value;
+        const tiktok = document.getElementById('tiktok').value;
+        const alasan = document.getElementById('alasan').value;
 
-document.getElementById("gate").style.display="none";
-showLoading(()=>{
-document.getElementById("portal").style.display="block";
-document.body.style.overflow="auto";
-});
-}
+        if(!nama || !umur) { alert("Isi Nama dan Umur dulu!"); return; }
 
-function showLoading(callback){
-const load=document.getElementById("loading");
-load.style.display="flex";
-setTimeout(()=>{
-load.style.display="none";
-callback();
-},2000);
-}
+        // 1. Simpan ke Firebase agar muncul di "Data Aktivitas"
+        db.ref('pendaftar').push({
+            nama: nama, umur: umur, tiktok: tiktok, status: 'TERDAFTAR', waktu: Date.now()
+        }).then(() => {
+            // 2. Redirect ke WhatsApp Grup
+            window.open("https://chat.whatsapp.com/FrYPryo1gJb6eHbNhXJRvu", "_blank");
+        });
+    }
 
-function goLink(url){
-showLoading(()=>{
-window.location.href=url;
-});
-}
+    // Tampilkan Data Realtime di Tabel
+    db.ref('pendaftar').on('value', (snap) => {
+        const tbody = document.getElementById('table-body');
+        tbody.innerHTML = '';
+        snap.forEach((child) => {
+            const v = child.val();
+            tbody.innerHTML += `<tr><td>${v.nama}</td><td style="color:#888">${v.umur} Thn</td><td class="status">TERDAFTAR</td></tr>`;
+        });
+    });
+
+    // --- ANIMASI TORNADO GALAXY ---
+    const canvas = document.getElementById('tornado');
+    const ctx = canvas.getContext('2d');
+    canvas.width = 150; canvas.height = 150;
+    let particles = [];
+    const colors = ['#4b0082', '#b533ff', '#ff00ff', '#00d2ff'];
+
+    class Particle {
+        constructor() { this.reset(); }
+        reset() {
+            this.y = canvas.height; this.angle = Math.random() * Math.PI * 2;
+            this.speed = 1 + Math.random() * 2; this.color = colors[Math.floor(Math.random()*colors.length)];
+        }
+        update() { this.y -= this.speed; this.angle += 0.15; if (this.y < 0) this.reset(); }
+        draw() {
+            const r = 5 + (Math.abs(canvas.height - this.y) * 0.2);
+            const x = (canvas.width/2) + Math.cos(this.angle) * r;
+            ctx.fillStyle = this.color; ctx.shadowBlur = 10; ctx.shadowColor = this.color;
+            ctx.beginPath(); ctx.arc(x, this.y, 1.2, 0, Math.PI*2); ctx.fill();
+        }
+    }
+    for(let i=0; i<150; i++) particles.push(new Particle());
+    function animate() {
+        ctx.clearRect(0,0,150,150);
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animate);
+    }
+    animate();
 </script>
-
 </body>
 </html>
