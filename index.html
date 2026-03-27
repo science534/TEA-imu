@@ -54,16 +54,16 @@
             box-shadow: 0 5px 20px rgba(181, 51, 255, 0.3);
         }
 
-        /* NEW CARD DESIGN (DIAMOND NEON STYLE) */
+        /* CARD DESIGN FIX */
         #card-section { width: 100%; display: none; text-align: center; animation: fadeIn 0.5s; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         #id-card-visual {
             width: 100%; background: linear-gradient(145deg, #0d0d15, #050508);
             border: 1px solid #b533ff; border-radius: 20px;
-            padding: 30px 20px; box-sizing: border-box; text-align: left;
+            padding: 25px 20px; box-sizing: border-box; text-align: left;
             position: relative; margin-bottom: 25px;
-            overflow: hidden;
+            overflow: hidden; display: flex; flex-direction: column; align-items: center;
             box-shadow: 0 0 30px rgba(181, 51, 255, 0.2);
         }
 
@@ -77,29 +77,39 @@
             font-family: 'Orbitron'; z-index: 0;
         }
 
+        /* Wadah Gambar/Logo Tengah */
+        .card-photo-box {
+            width: 80px; height: 80px; border-radius: 50%;
+            border: 2px solid #b533ff; overflow: hidden;
+            margin-bottom: 15px; z-index: 1; background: #000;
+            box-shadow: 0 0 15px rgba(181, 51, 255, 0.4);
+        }
+        .card-photo-box img { width: 100%; height: 100%; object-fit: cover; }
+
         .card-header-community { 
-            font-family: 'Orbitron'; color: #ffd700; font-size: 10px; 
-            letter-spacing: 2px; margin-bottom: 10px; display: block;
+            position: absolute; top: 15px; right: 20px;
+            font-family: 'Orbitron'; color: #ffd700; font-size: 8px; 
+            letter-spacing: 1px; z-index: 1;
         }
         
         .card-main-title { 
             color: #fff; font-family: 'Orbitron', sans-serif; 
-            font-size: 18px; font-weight: 700; margin-bottom: 25px;
+            font-size: 16px; font-weight: 700; margin-bottom: 20px;
             border-bottom: 1px solid rgba(181, 51, 255, 0.3);
-            padding-bottom: 10px; position: relative; z-index: 1;
+            padding-bottom: 10px; position: relative; z-index: 1; width: 100%; text-align: center;
         }
 
-        .card-info-row { display: flex; margin-bottom: 12px; position: relative; z-index: 1; }
+        .card-info-wrap { width: 100%; z-index: 1; }
+        .card-info-row { display: flex; margin-bottom: 12px; }
         .card-info-label { color: #b533ff; width: 90px; font-size: 11px; font-weight: bold; letter-spacing: 1px; }
-        .card-info-value { color: #fff; font-weight: bold; font-size: 14px; text-transform: uppercase; }
+        .card-info-value { color: #fff; font-weight: bold; font-size: 13px; text-transform: uppercase; }
 
         .btn-download { width: 100%; padding: 15px; border-radius: 50px; background: #00e676; color: #000; border:none; margin-bottom:12px; font-weight:800; cursor:pointer; font-size: 13px; }
         .btn-wa { width: 100%; padding: 15px; border-radius: 50px; background: #fff; color: #000; border:none; font-weight:800; cursor:pointer; font-size: 13px; }
 
-        /* DATABASE ACTIVITY */
+        /* DATABASE */
         .db-section { margin-top: 30px; background: rgba(15, 15, 25, 0.9); padding: 20px; border-radius: 15px; border: 1px solid #222; width: 100%; box-sizing: border-box; }
         table { width: 100%; border-collapse: collapse; font-size: 12px; }
-        th { color: #444; padding-bottom: 10px; font-size: 10px; letter-spacing: 1px; }
         td { padding: 10px 0; border-bottom: 1px solid #1a1a1a; }
         .status-tag { color: #00ff88; font-weight: bold; text-align: right; }
     </style>
@@ -143,12 +153,19 @@
     <div id="card-section">
         <div id="id-card-visual">
             <span class="card-header-community">TEA COMMUNITY 1</span>
+            
+            <div class="card-photo-box">
+                <img src="https://image2url.com/r2/default/images/1774609049054-7f572d8e-3aab-4ad2-8df1-5d719b0b7fd6.jpg" alt="Logo" crossorigin="anonymous">
+            </div>
+
             <div class="card-main-title">KARTU IDENTITAS TEA</div>
             
-            <div class="card-info-row"><div class="card-info-label">IDENTITAS</div><div id="c-nama" class="card-info-value"></div></div>
-            <div class="card-info-row"><div class="card-info-label">USIA</div><div id="c-umur" class="card-info-value"></div></div>
-            <div class="card-info-row"><div class="card-info-label">LEVEL</div><div id="c-status" class="card-info-value"></div></div>
-            <div class="card-info-row"><div class="card-info-label">PLATFORM</div><div id="c-tiktok" class="card-info-value"></div></div>
+            <div class="card-info-wrap">
+                <div class="card-info-row"><div class="card-info-label">IDENTITAS:</div><div id="c-nama" class="card-info-value"></div></div>
+                <div class="card-info-row"><div class="card-info-label">USIA:</div><div id="c-umur" class="card-info-value"></div></div>
+                <div class="card-info-row"><div class="card-info-label">STATUS:</div><div id="c-status" class="card-info-value"></div></div>
+                <div class="card-info-row"><div class="card-info-label">ALASAN:</div><div id="c-alasan" class="card-info-value"></div></div>
+            </div>
         </div>
         <button class="btn-download" onclick="downloadKartu()">UNDUH KARTU (PNG)</button>
         <button class="btn-wa" onclick="window.open('https://chat.whatsapp.com/FrYPryo1gJb6eHbNhXJRvu', '_blank')">GABUNG GRUP SEKARANG</button>
@@ -157,7 +174,6 @@
     <div class="db-section">
         <div style="color:#b533ff; font-family:'Orbitron'; font-size:11px; margin-bottom:15px; letter-spacing:1px;">AKTIVITAS PENDAFTAR</div>
         <table>
-            <thead><tr><th align="left">NAMA</th><th align="left">UMUR</th><th align="right">STATUS</th></tr></thead>
             <tbody id="table-body"></tbody>
         </table>
     </div>
@@ -168,14 +184,15 @@
 
     function prosesRegistrasi() {
         const n = document.getElementById('nama').value, u = document.getElementById('umur').value, 
-              s = document.getElementById('status').value, t = document.getElementById('tiktok').value;
+              s = document.getElementById('status').value, t = document.getElementById('tiktok').value,
+              a = document.getElementById('alasan').value;
         if(!n || !u) return alert("Mohon lengkapi Nama dan Umur!");
 
-        db.ref('pendaftar').push({ nama: n, umur: u, status: s, tiktok: t, waktu: Date.now() }).then(() => {
+        db.ref('pendaftar').push({ nama: n, umur: u, status: s, tiktok: t, alasan: a, waktu: Date.now() }).then(() => {
             document.getElementById('c-nama').textContent = n;
             document.getElementById('c-umur').textContent = u + " TAHUN";
             document.getElementById('c-status').textContent = s;
-            document.getElementById('c-tiktok').textContent = t || 'NOT SET';
+            document.getElementById('c-alasan').textContent = a || '-';
             
             document.getElementById('form-section').style.display = 'none';
             document.getElementById('card-section').style.display = 'block';
@@ -184,8 +201,8 @@
     }
 
     function downloadKartu() {
-        html2canvas(document.getElementById('id-card-visual'), {backgroundColor:'#050508', scale: 2}).then(c => {
-            const l = document.createElement('a'); l.href = c.toDataURL(); l.download = 'ID_CARD_TEA.png'; l.click();
+        html2canvas(document.getElementById('id-card-visual'), {backgroundColor:'#050508', scale: 2, useCORS: true}).then(c => {
+            const l = document.createElement('a'); l.href = c.toDataURL(); l.download = 'KARTU_TEA.png'; l.click();
         });
     }
 
